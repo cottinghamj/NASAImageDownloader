@@ -68,8 +68,8 @@ STATE_FILE = Path("last_run.txt")
 MAX_RUN_TIME = 2 * 60 * 60  # 2 hours in seconds
 
 # Ensure the output directories exist
-IMG_DIR.mkdir(exist_ok=True)
-META_DIR.mkdir(exist_ok=True)
+IMG_DIR.mkdir(parents=True, exist_ok=True)
+META_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ------------------------------------------------------------------
@@ -87,6 +87,12 @@ def parse_args() -> argparse.Namespace:
         "--end",
         type=str,
         help="End date (YYYY-MM-DD). Defaults to today.",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=".",
+        help="Base directory where images/ and metadata/ folders will be created. Default is the current working directory.",
     )
     return parser.parse_args()
 
@@ -180,6 +186,15 @@ def save_metadata(item: Dict, dest: Path) -> None:
 # ------------------------------------------------------------------
 def main() -> None:
     args = parse_args()
+
+    # Resolve output base directory and override global paths
+    base_dir = Path(args.output).resolve()
+    global IMG_DIR, META_DIR, STATE_FILE
+    IMG_DIR = base_dir / "images"
+    META_DIR = base_dir / "metadata"
+    STATE_FILE = base_dir / "last_run.txt"
+    IMG_DIR.mkdir(parents=True, exist_ok=True)
+    META_DIR.mkdir(parents=True, exist_ok=True)
 
     start_date = (
         datetime.datetime.strptime(args.start, "%Y-%m-%d")
