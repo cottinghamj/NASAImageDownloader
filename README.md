@@ -101,7 +101,7 @@ last_run.txt
 
 ## Author
 
-*Created by the NASA Open‑Source Initiative / community contributors.*
+*Created by Jarian Cottingham.*
 
 ## License
 
