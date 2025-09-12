@@ -7,6 +7,8 @@ pyvenv.cfg
 /include
 /lib
 
+last_run.txt
+
 # Generated folders
 /images
 /metadata
