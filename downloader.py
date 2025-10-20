@@ -50,11 +50,14 @@ from pathlib import Path
 from typing import Dict, List
 
 import requests
+
 try:
     from tqdm import tqdm
 except ImportError:
+
     def tqdm(iterable, *args, **kwargs):
         return iterable
+
 
 # ------------------------------------------------------------------
 # Configuration
@@ -65,7 +68,7 @@ API_ASSET_URL = "https://images-api.nasa.gov/asset"
 IMG_DIR = Path("images")
 META_DIR = Path("metadata")
 STATE_FILE = Path("last_run.txt")
-MAX_RUN_TIME = 2 * 60 * 60  # 2 hours in seconds
+MAX_RUN_TIME = 4 * 60 * 60  # 4 hours in seconds
 
 # Ensure the output directories exist
 IMG_DIR.mkdir(parents=True, exist_ok=True)
@@ -77,7 +80,9 @@ META_DIR.mkdir(parents=True, exist_ok=True)
 # ------------------------------------------------------------------
 def parse_args() -> argparse.Namespace:
     """Parse CLI arguments."""
-    parser = argparse.ArgumentParser(description="Download NASA images for a date range")
+    parser = argparse.ArgumentParser(
+        description="Download NASA images for a date range"
+    )
     parser.add_argument(
         "--start",
         type=str,
@@ -252,7 +257,9 @@ def main() -> None:
         try:
             save_metadata(item, meta_path)
         except Exception as e:
-            print(f"[{idx}] Failed to write metadata for {nasa_id}: {e}", file=sys.stderr)
+            print(
+                f"[{idx}] Failed to write metadata for {nasa_id}: {e}", file=sys.stderr
+            )
 
         elapsed = time.time() - start_time
         if downloaded:
